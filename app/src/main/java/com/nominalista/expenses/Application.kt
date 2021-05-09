@@ -18,18 +18,10 @@ class Application : android.app.Application() {
 
     /* Singletons - should be replaced with some dependency injection tool. */
 
-    val authenticationManager: AuthenticationManager by lazy {
-        AuthenticationManager(this, FirebaseAuth.getInstance())
-    }
+//    val authenticationManager: AuthenticationManager by lazy {
+//        AuthenticationManager(this, FirebaseAuth.getInstance())
+//    }
 
-    val defaultDataStore: DataStore
-        get() {
-            return if (authenticationManager.isUserSignedIn()) {
-                cloudDataStore
-            } else {
-                localDataStore
-            }
-        }
 
     val localDataStore: DataStore by lazy {
         val database = ApplicationDatabase.build(this)
@@ -40,6 +32,9 @@ class Application : android.app.Application() {
             database.expenseTagJoinDao()
         )
     }
+
+    val defaultDataStore: DataStore
+    get() = localDataStore
 
     val cloudDataStore: DataStore by lazy {
         FirebaseDataStore(
@@ -52,9 +47,6 @@ class Application : android.app.Application() {
         PreferenceDataSource()
     }
 
-    val configuration: Configuration by lazy {
-        FirebaseConfiguration(FirebaseRemoteConfig.getInstance())
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -68,7 +60,6 @@ class Application : android.app.Application() {
     }
 
     private fun enqueueConfigurationSync() {
-        configuration.enqueueSync()
     }
 
     private fun applyTheme() {

@@ -16,7 +16,6 @@ import io.reactivex.disposables.CompositeDisposable
 
 class OnboardingFragmentModel(
     application: Application,
-    private val authenticationManager: AuthenticationManager,
     private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
 
@@ -32,25 +31,25 @@ class OnboardingFragmentModel(
     }
 
     fun continueWithGoogleRequested() {
-        requestGoogleSignIn.next(authenticationManager.getGoogleSignInRequest())
+//        requestGoogleSignIn.next(authenticationManager.getGoogleSignInRequest())
     }
 
     fun handleGoogleSignInResult(result: Intent) {
-        isLoading.value = true
-
-        disposables += authenticationManager.handleGoogleSignInResult(result)
-            .subscribe({
-                Log.d(TAG, "Succeeded to sign in with Google.")
-
-                isLoading.value = false
-
-                DataMigrationWorker.enqueue(getApplication())
-                finishOnboardingAndNavigateHome()
-            }, { error ->
-                isLoading.value = false
-
-                Log.w(TAG, "Failed to sign in with Google, cause: ($error).")
-            })
+//        isLoading.value = true
+//
+//        disposables += authenticationManager.handleGoogleSignInResult(result)
+//            .subscribe({
+//                Log.d(TAG, "Succeeded to sign in with Google.")
+//
+//                isLoading.value = false
+//
+//                DataMigrationWorker.enqueue(getApplication())
+//                finishOnboardingAndNavigateHome()
+//            }, { error ->
+//                isLoading.value = false
+//
+//                Log.w(TAG, "Failed to sign in with Google, cause: ($error).")
+//            })
     }
 
     private fun finishOnboardingAndNavigateHome() {
@@ -69,7 +68,6 @@ class OnboardingFragmentModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return OnboardingFragmentModel(
                 application,
-                application.authenticationManager,
                 application.preferenceDataSource
             ) as T
         }

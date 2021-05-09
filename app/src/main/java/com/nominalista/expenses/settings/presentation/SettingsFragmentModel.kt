@@ -19,8 +19,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class SettingsFragmentModel(
     application: Application,
-    private val preferenceDataSource: PreferenceDataSource,
-    private val authenticationManager: AuthenticationManager
+    private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
     val itemModels = Variable(emptyList<SettingItemModel>())
     val selectDefaultCurrency = Event()
@@ -50,11 +49,9 @@ class SettingsFragmentModel(
 
         val itemModels = mutableListOf<SettingItemModel>()
         itemModels += createAccountHeader(context)
-        itemModels += if (authenticationManager.isUserSignedIn()) {
-            createSignOut(context)
-        } else {
+        itemModels +=
             signUpOrSignIn(context)
-        }
+
 
         return itemModels
     }
@@ -67,7 +64,6 @@ class SettingsFragmentModel(
 
         return ActionSettingItemModel(title).apply {
             click = {
-                authenticationManager.signOut()
                 preferenceDataSource.setIsUserOnboarded(getApplication(), false)
                 navigateToOnboarding.next()
             }
@@ -188,8 +184,7 @@ class SettingsFragmentModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return SettingsFragmentModel(
                 application,
-                application.preferenceDataSource,
-                application.authenticationManager
+                application.preferenceDataSource
             ) as T
         }
     }

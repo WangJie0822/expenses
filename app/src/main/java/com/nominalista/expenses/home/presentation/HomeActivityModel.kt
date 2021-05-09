@@ -18,28 +18,26 @@ import com.nominalista.expenses.util.reactive.Variable
 import java.util.*
 
 class HomeActivityModel(
-    application: Application,
-    private val authenticationManager: AuthenticationManager,
-    private val configuration: Configuration
+    application: Application
 ) : AndroidViewModel(application) {
 
     val isUserSignedIn: Variable<Boolean> by lazy {
-        Variable(defaultValue = authenticationManager.isUserSignedIn())
+        Variable(defaultValue = false)
     }
     val userName: Variable<String> by lazy {
-        Variable(defaultValue = authenticationManager.getCurrentUserName() ?: "")
+        Variable(defaultValue = "")
     }
     val userEmail: Variable<String> by lazy {
-        Variable(defaultValue = authenticationManager.getCurrentUserEmail() ?: "")
+        Variable(defaultValue =  "")
     }
     val isBannerEnabled: Variable<Boolean> by lazy {
-        Variable(defaultValue = configuration.getBoolean(Configuration.KEY_BANNER_ENABLED))
+        Variable(defaultValue = false)
     }
     val bannerTitle: Variable<String> by lazy {
-        Variable(defaultValue = configuration.getString(Configuration.KEY_BANNER_TITLE))
+        Variable(defaultValue = "")
     }
     val bannerSubtitle: Variable<String> by lazy {
-        Variable(defaultValue = configuration.getString(Configuration.KEY_BANNER_SUBTITLE))
+        Variable(defaultValue = "")
     }
 
     val navigateToOnboarding = Event()
@@ -133,7 +131,7 @@ class HomeActivityModel(
     }
 
     fun performBannerActionRequested() {
-        val bannerActionUrl = configuration.getString(Configuration.KEY_BANNER_ACTION_URL)
+        val bannerActionUrl = ""
         showActivity.next(Uri.parse(bannerActionUrl))
     }
 
@@ -142,9 +140,7 @@ class HomeActivityModel(
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return HomeActivityModel(
-                application,
-                application.authenticationManager,
-                application.configuration
+                application
             ) as T
         }
     }

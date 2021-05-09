@@ -21,15 +21,15 @@ class AuthenticationManager(
     private val firebaseAuth: FirebaseAuth
 ) {
 
-    private val googleSignInClient: GoogleSignInClient
+//    private val googleSignInClient: GoogleSignInClient
 
     init {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(context, gso)
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(context.getString(R.string.default_web_client_id))
+//            .requestEmail()
+//            .build()
+//
+//        googleSignInClient = GoogleSignIn.getClient(context, gso)
     }
 
     // Current user
@@ -53,7 +53,7 @@ class AuthenticationManager(
     // Sign in
 
     fun getGoogleSignInRequest(): Intent {
-        return googleSignInClient.signInIntent
+        return Intent()
     }
 
     fun handleGoogleSignInResult(googleSignInResult: Intent): Completable {
@@ -73,24 +73,24 @@ class AuthenticationManager(
 
     // Sign out
 
-    fun signOut(): Completable {
-        val currentUser = firebaseAuth.currentUser
-
-        if (currentUser == null) {
-            Log.w(TAG, "Current user is null. No need to sign out.")
-            return Completable.complete()
-        }
-
-        firebaseAuth.signOut()
-
-        val account = GoogleSignIn.getLastSignedInAccount(context)
-        return if (account == null) {
-            // User signed in anonymously. No need to sign out from Google.
-            Completable.complete()
-        } else {
-            val signOutFromGoogle = googleSignInClient.signOut()
-            Completable.create(ReactiveTaskListener(signOutFromGoogle))
-        }
+    fun signOut() {
+//        val currentUser = firebaseAuth.currentUser
+//
+//        if (currentUser == null) {
+//            Log.w(TAG, "Current user is null. No need to sign out.")
+//            return Completable.complete()
+//        }
+//
+//        firebaseAuth.signOut()
+//
+//        val account = GoogleSignIn.getLastSignedInAccount(context)
+//        return if (account == null) {
+//            // User signed in anonymously. No need to sign out from Google.
+//            Completable.complete()
+//        } else {
+//            val signOutFromGoogle = googleSignInClient.signOut()
+//            Completable.create(ReactiveTaskListener(signOutFromGoogle))
+//        }
     }
 
     companion object {

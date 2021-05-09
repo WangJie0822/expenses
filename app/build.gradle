@@ -43,10 +43,10 @@ android {
     signingConfigs {
         release {
             // These properties can be placed in ~/.gradle/gradle.properties.
-            storeFile file(EXPENSES_STORE_FILE)
-            storePassword EXPENSES_STORE_PASSWORD
-            keyAlias EXPENSES_KEY_ALIAS
-            keyPassword EXPENSES_KEY_PASSWORD
+            storeFile file("android_test.jks")
+            storePassword "123123"
+            keyAlias "test"
+            keyPassword "123123"
         }
     }
 
@@ -140,5 +140,3 @@ dependencies {
     androidTestImplementation testDependencies.runner
     androidTestImplementation testDependencies.roomTesting
 }
-
-apply plugin: 'com.google.gms.google-services'
